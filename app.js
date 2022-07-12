@@ -1,33 +1,23 @@
 const express = require('express');
 const path = require('path');
+const moment = require('moment');
+const exphbs = require('express-handlebars');
+const logger = require('./middleware/logger');
+
 const app = express();
 
-const members = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john@gmail.com',
-    status: 'active'
-  },
-  {
-    id: 2,
-    name: 'Bob Williams',
-    email: 'bob@gmail.com',
-    status: 'inactive'
-  },
-  {
-    id: 3,
-    name: 'Shannon Jackson',
-    email: 'shannon@gmail.com',
-    status: 'active'
-  }
-];
+//Init middleware
+//app.use(logger);
 
-//Gets all members
-app.get('/api/members', (req, res) => res.json(members));
+//Body Parser Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 //Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Members API routes
+app.use('/api/members', require('./routes/api/members'));
 
 const PORT = process.env.PORT || 5000;
 
